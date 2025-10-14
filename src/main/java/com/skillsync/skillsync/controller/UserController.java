@@ -3,6 +3,7 @@ package com.skillsync.skillsync.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.skillsync.skillsync.dto.UserUpdateDTO;
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
 import com.skillsync.skillsync.service.SkillService;
@@ -42,9 +43,9 @@ public class UserController {
         return null;
     }
 
-    //update User by id
+    //update User by id  -> @RequestBody User user, change to UserUpdateDTO object
     @PutMapping
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+    public User updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO user) {
         // TODO: Implement update user logic (call service layer)
         return null;
     }
