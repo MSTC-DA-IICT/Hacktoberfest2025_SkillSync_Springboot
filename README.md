@@ -12,6 +12,16 @@ Every contribution matters — from fixing bugs to building new APIs or improvin
 
 ---
 
+### How to Contribute
+* Check `contributing.md` for details on how to work with github.
+* Go to the `Issues` find an issue for you. 
+* If you completely understand the issue then leave a comment to owner to assing that issue.
+* Once you are assigned the issue, start working on it and finally make your `PR`.
+* If you find a bug or want to add a new feature then you can specify it by adding a new issue. We will look into it and assign it.
+* If you have added some new dependancy then make sure that that dependancy is stable and do not forget to mention in to the PR and also update the README file.
+
+---
+
 ## 🧩 Project Overview
 
 **SkillSync** is designed to create a space where:
@@ -32,24 +42,12 @@ This project focuses on **real-world backend architecture**, including:
 
 | Layer | Technology |
 |-------|-------------|
-| **Backend** | Spring Boot (3.x) |
+| **Backend** | Spring Boot  |
 | **ORM / DB** | Spring Data JPA + MySQL |
 | **Build Tool** | Maven |
-| **Language** | Java 17+ |
+| **Language** | Java 21+ |
 | **Version Control** | Git + GitHub |
 | **Open Source Event** | Hacktoberfest 2025 |
-
----
-
-## ⚙️ Prerequisites
-
-To run and contribute to this project, ensure you have:
-
-- **Java 17 or higher**  
-- **Maven 3.9+**  
-- **MySQL 8.0+**  
-- **An IDE** (IntelliJ IDEA / Eclipse / VS Code recommended)
-- **Git** for version control
 
 ---
 
@@ -58,7 +56,7 @@ To run and contribute to this project, ensure you have:
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/<your-username>/SkillSync.git
+git clone https://github.com/MSTC-DA-IICT/Hacktoberfest2k25_springboot_SkillSync.git
 cd SkillSync
 
 
