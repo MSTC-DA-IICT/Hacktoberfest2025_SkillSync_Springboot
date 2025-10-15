@@ -53,18 +53,22 @@ This project focuses on **real-world backend architecture**, including:
 
 ## 🧾 Project Setup
 
-### 1️⃣ Clone the Repository
-
 ```bash
 git clone https://github.com/MSTC-DA-IICT/Hacktoberfest2k25_springboot_SkillSync.git
-cd SkillSync
 
+Before running the project, you must create a file named application.properties inside src/main/resources/.
+
+You can use the application.properties.example file as a reference for how to set up your configuration.
+
+Important: The filename must be exactly application.properties 
+
+Example configuration:
 
 ---
 # DATABASE CONFIGURATION
 # ----------------------------------------
-spring.datasource.url=jdbc:mysql://localhost:3306/skillsync_db?createDatabaseIfNotExist=true
-spring.datasource.username=root
+spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
+spring.datasource.username=your_username
 spring.datasource.password=yourpassword
 
 # ----------------------------------------
