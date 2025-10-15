@@ -16,35 +16,35 @@ import java.util.*;
 public class UserController {
 
     // Save user
-    @PostMapping
+    @PostMapping("/register")
     public User saveUser(@RequestBody User user) {
         // TODO: Add logic to save user
         return null;
     }
 
     //get all users
-    @GetMapping
+    @GetMapping("/allusers")
     public List<User> getAllUsers() {
         // TODO: Add logic to fetch all users
         return null;
     }
 
     // get user by id
-    @GetMapping
+    @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         // TODO: Add logic to fetch user by ID
         return null;
     }
 
     // get skill's of particular user
-    @GetMapping
+    @GetMapping("/{id}/skills")
     public List<Skill> getUserSkills(@PathVariable Long id) {
         // TODO: Add logic to fetch user's skills
         return null;
     }
 
     //update User by id  -> @RequestBody User user, change to UserUpdateDTO object
-    @PutMapping
+    @PutMapping("/update/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO user) {
         // TODO: Implement update user logic (call service layer)
         return null;
@@ -52,7 +52,7 @@ public class UserController {
 
 
     //  Add Skill to existing User
-    @PostMapping
+    @PostMapping("/{id}/add/skills")
     public User addSkillToUser(@PathVariable Long id, @RequestBody Skill skill) {
         // TODO: Implement logic to attach skill to user via service layer
         return null;
@@ -60,14 +60,14 @@ public class UserController {
 
 
     // Find Users by Skill Name
-    @GetMapping
+    @GetMapping("/skill/{skillName}")
     public List<User> getUsersBySkill(@PathVariable String skillName) {
         // TODO: Implement logic to fetch users having the given skill
         return null;
     }
 
     // Search Users by Name, Bio, or Skills
-    @GetMapping
+    @GetMapping("/search")
     public List<User> searchUsers(@RequestParam("query") String query) {
         // TODO: Implement logic to search users by name, bio, or skills
         return null;
