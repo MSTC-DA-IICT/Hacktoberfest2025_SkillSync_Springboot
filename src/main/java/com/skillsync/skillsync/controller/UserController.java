@@ -15,6 +15,9 @@ import java.util.*;
 @RequestMapping("/api/users")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     // Save user
     @PostMapping("/register")
     public User saveUser(@RequestBody User user) {
@@ -25,22 +28,20 @@ public class UserController {
     //get all users
     @GetMapping("/allusers")
     public List<User> getAllUsers() {
-        // TODO: Add logic to fetch all users
-        return null;
+        return userService.getAllUsers();
     }
 
     // get user by id
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
-        // TODO: Add logic to fetch user by ID
-        return null;
+        return userService.getUserById(id);
     }
 
     // get skill's of particular user
     @GetMapping("/{id}/skills")
     public List<Skill> getUserSkills(@PathVariable Long id) {
-        // TODO: Add logic to fetch user's skills
-        return null;
+        
+        return userService.getUserSkills(id);
     }
 
     //update User by id  -> @RequestBody User user, change to UserUpdateDTO object
