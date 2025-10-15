@@ -60,7 +60,7 @@ Before running the project, you must create a file named application.properties 
 
 You can use the application.properties.example file as a reference for how to set up your configuration.
 
-Important: The filename must be exactly application.properties.
+Important: The filename must be exactly application.properties 
 
 Example configuration:
 
