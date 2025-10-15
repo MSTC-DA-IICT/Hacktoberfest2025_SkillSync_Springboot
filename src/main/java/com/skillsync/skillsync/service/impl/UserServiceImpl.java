@@ -25,14 +25,18 @@ public class UserServiceImpl implements UserService
 
     @Override
     public List<User> getAllUsers() {
-        // TODO: Implement fetch all users logic
-        return new ArrayList<>();
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id) {
-        // TODO: Implement get user by ID logic
-        return null;
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if(!userOptional.isPresent())
+        {
+            throw new RuntimeException("User Not Found");
+        }
+        return userOptional.get();
     }
 
 
