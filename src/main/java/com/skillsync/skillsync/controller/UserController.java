@@ -1,6 +1,7 @@
 package com.skillsync.skillsync.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.skillsync.skillsync.dto.UserUpdateDTO;
@@ -8,6 +9,7 @@ import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
 import com.skillsync.skillsync.service.SkillService;
 import com.skillsync.skillsync.service.UserService;
+import com.skillsync.skillsync.service.impl.UserServiceImpl;
 
 import java.util.*;
 
@@ -15,18 +17,24 @@ import java.util.*;
 @RequestMapping("/api/users")
 public class UserController {
 
+    @Autowired
+    UserServiceImpl userServiceImpl;
+
+    public UserController(UserServiceImpl userServiceImpl){
+        this.userServiceImpl = userServiceImpl;
+    }
+
     // Save user
     @PostMapping("/register")
     public User saveUser(@RequestBody User user) {
-        // TODO: Add logic to save user
-        return null;
+        return userServiceImpl.saveUser(user);
     }
 
     //get all users
     @GetMapping("/allusers")
     public List<User> getAllUsers() {
         // TODO: Add logic to fetch all users
-        return null;
+        return userServiceImpl.getAllUsers();
     }
 
     // get user by id
