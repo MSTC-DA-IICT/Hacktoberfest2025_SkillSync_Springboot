@@ -2,12 +2,20 @@ package com.skillsync.skillsync.service.impl;
 
 import java.util.*;
 
+import javax.management.RuntimeErrorException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
+import com.skillsync.skillsync.repository.UserRepository;
 import com.skillsync.skillsync.service.UserService;
 
 public class UserServiceImpl implements UserService 
 {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public User saveUser(User user) {
@@ -17,14 +25,18 @@ public class UserServiceImpl implements UserService
 
     @Override
     public List<User> getAllUsers() {
-        // TODO: Implement fetch all users logic
-        return new ArrayList<>();
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id) {
-        // TODO: Implement get user by ID logic
-        return null;
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if(!userOptional.isPresent())
+        {
+            throw new RuntimeException("User Not Found");
+        }
+        return userOptional.get();
     }
 
 
@@ -63,5 +75,19 @@ public class UserServiceImpl implements UserService
     public List<User> searchUsers(String query) {
         // TODO: method to search users by name, bio, or skill name
         return null;
+    }
+
+    @Override
+    public List<Skill> getUserSkills(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if(!userOptional.isPresent())
+        {
+            throw new RuntimeException("User Not Found");
+        }
+
+        User user = userOptional.get();
+
+        return user.getSkills();
     }
 }

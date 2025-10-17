@@ -24,4 +24,6 @@ public interface UserService {
     // Search Users by Name, Bio, or Skills
     List<User> searchUsers(String query);
 
+    //get skills of a particular userss
+    List<Skill> getUserSkills(Long userId);
 }
