@@ -2,8 +2,13 @@ package com.skillsync.skillsync.service.impl;
 
 import java.util.*;
 
+import javax.management.RuntimeErrorException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
+import com.skillsync.skillsync.repository.UserRepository;
 import com.skillsync.skillsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +25,9 @@ public class UserServiceImpl implements UserService
         this.userRepository = userRepository;
     }
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public User saveUser(User user) {
         // TODO: Implement save logic using repository
@@ -28,14 +36,18 @@ public class UserServiceImpl implements UserService
 
     @Override
     public List<User> getAllUsers() {
-        // TODO: Implement fetch all users logic
-        return new ArrayList<>();
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(Long id) {
-        // TODO: Implement get user by ID logic
-        return null;
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if(!userOptional.isPresent())
+        {
+            throw new RuntimeException("User Not Found");
+        }
+        return userOptional.get();
     }
 
 
@@ -81,5 +93,21 @@ public class UserServiceImpl implements UserService
         return userRepository.searchUsers(query.trim());
     }
 
-    
+    @Override
+    public List<Skill> getUserSkills(Long userId) {
+        // Find user by ID
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        // Check if user exists
+        if(!userOptional.isPresent())
+        {
+            // Note: A custom exception (e.g., UserNotFoundException) is better practice
+            throw new RuntimeException("User Not Found"); 
+        }
+
+        User user = userOptional.get();
+
+        // Return the list of skills from the User entity
+        return user.getSkills();
+    }
 }
