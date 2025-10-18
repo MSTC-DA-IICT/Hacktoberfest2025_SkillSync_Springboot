@@ -10,9 +10,20 @@ import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
 import com.skillsync.skillsync.repository.UserRepository;
 import com.skillsync.skillsync.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.skillsync.skillsync.repository.UserRepository;
 
+@Service
 public class UserServiceImpl implements UserService 
-{
+{   
+    private final UserRepository userRepository;
+
+    //Constructor for Dependency Injection
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Autowired
     private UserRepository userRepository;
@@ -73,21 +84,30 @@ public class UserServiceImpl implements UserService
     // Search Users by Name, Bio, or Skills
     @Override
     public List<User> searchUsers(String query) {
-        // TODO: method to search users by name, bio, or skill name
-        return null;
+        if (query == null || query.trim().isEmpty()) {
+            // Requirement: Return appropriate empty list if no users found
+            return Collections.emptyList();
+        }
+        
+        //Call the custom query defined in the repository
+        return userRepository.searchUsers(query.trim());
     }
 
     @Override
     public List<Skill> getUserSkills(Long userId) {
+        // Find user by ID
         Optional<User> userOptional = userRepository.findById(userId);
 
+        // Check if user exists
         if(!userOptional.isPresent())
         {
-            throw new RuntimeException("User Not Found");
+            // Note: A custom exception (e.g., UserNotFoundException) is better practice
+            throw new RuntimeException("User Not Found"); 
         }
 
         User user = userOptional.get();
 
+        // Return the list of skills from the User entity
         return user.getSkills();
     }
 }
