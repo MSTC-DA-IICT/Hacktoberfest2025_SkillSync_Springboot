@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.management.RuntimeErrorException;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.skillsync.skillsync.model.Skill;
@@ -14,19 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.skillsync.skillsync.repository.UserRepository;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService 
 {   
     private final UserRepository userRepository;
-
-    //Constructor for Dependency Injection
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Override
     public User saveUser(User user) {
