@@ -1,9 +1,10 @@
 package com.skillsync.skillsync.service.impl;
 
-import java.util.*;
-
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.service.SkillService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SkillServiceImpl implements SkillService {
 

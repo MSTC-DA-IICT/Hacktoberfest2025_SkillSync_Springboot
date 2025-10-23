@@ -1,8 +1,8 @@
 package com.skillsync.skillsync.service;
 
-import java.util.List;
-
 import com.skillsync.skillsync.model.Skill;
+
+import java.util.List;
 
 public interface SkillService {
 
