@@ -56,15 +56,17 @@ public class UserServiceImpl implements UserService
         UserUpdateDTO.UserUpdateDTOBuilder builder = UserUpdateDTO.builder();
         ofNullable(existingDto.getBio()).ifPresent(builder::bio);
         ofNullable(existingDto.getName()).ifPresent(builder::name);
-
+        if (!CollectionUtils.isEmpty(userUpdateDTO.getSkills())) {
+            builder.skills(userUpdateDTO.getSkills());
+        }
         UserUpdateDTO updateDTO = builder.build();
         User updatedUser = userMapper.fromDtoToEntity(updateDTO);
 
         updatedUser.setId(existingUser.getId());
-        if (!CollectionUtils.isEmpty(userUpdateDTO.getSkills())) {
+        if (!CollectionUtils.isEmpty(updateDTO.getSkills())) {
             updatedUser.getSkills().clear();
             User finalUpdatedUser = updatedUser;
-            List<Skill> updatedSkills = userUpdateDTO.getSkills().stream()
+            List<Skill> updatedSkills = updateDTO.getSkills().stream()
                     .map(skillMapper::fromDtoToEntity)
                     .peek(skill -> skill.setUser(finalUpdatedUser))
                     .toList();
