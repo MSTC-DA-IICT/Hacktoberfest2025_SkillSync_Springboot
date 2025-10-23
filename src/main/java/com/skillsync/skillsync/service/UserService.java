@@ -1,9 +1,10 @@
 package com.skillsync.skillsync.service;
 
-import java.util.*;
-
+import com.skillsync.skillsync.dto.UserUpdateDTO;
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
+
+import java.util.List;
 
 public interface UserService {
     User saveUser(User user); 
@@ -13,7 +14,7 @@ public interface UserService {
     User getUserById(Long id); 
 
     // Update User
-    User updateUser(Long id, User user);
+    User updateUser(Long id, UserUpdateDTO user);
 
     // Add Skill to existing  User
     User addSkillToUser(Long userId, Skill skill);
