@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +83,13 @@ public class UserServiceImpl implements UserService
         // TODO: Add skill to user’s skill list
         // TODO: Save updated user
         // TODO: Return updated user
-        return null;
+        User existingUser = getUserById(userId);
+        if (CollectionUtils.isEmpty(existingUser.getSkills())) {
+            existingUser.getSkills().add(skill);
+        } else {
+            existingUser.setSkills(List.of(skill));
+        }
+        return userRepository.save(existingUser);
     }
 
 
