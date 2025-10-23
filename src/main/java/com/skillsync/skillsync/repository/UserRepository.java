@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
            "OR LOWER(u.bio) LIKE LOWER(CONCAT('%', :query, '%')) " +
            "OR LOWER(s.name) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<User> searchUsers(@Param("query") String query);
+
+    List<User> findBySkillsNameContainingIgnoreCase(String skillName);
 }
