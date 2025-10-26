@@ -1,5 +1,6 @@
 package com.skillsync.skillsync.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.*;
 
@@ -8,6 +9,7 @@ import java.util.*;
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
 
     private String name;
@@ -25,6 +27,7 @@ public class User {
     private boolean availableForMentorship = false;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Skill> skills = new ArrayList<>();
 
     // Constructors

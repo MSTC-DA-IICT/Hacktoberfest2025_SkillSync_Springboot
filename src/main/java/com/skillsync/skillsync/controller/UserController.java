@@ -1,6 +1,8 @@
 package com.skillsync.skillsync.controller;
 
+import com.skillsync.skillsync.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.skillsync.skillsync.dto.UserUpdateDTO;
@@ -29,11 +31,10 @@ public class UserController {
 
     // Save user
     @PostMapping("/register")
-    public User saveUser(@RequestBody User user) {
-        // TODO: Add logic to save user
-        return null;
+    public ResponseEntity<User> registerUser(@RequestBody UserDTO userDTO) {
+        User savedUser = userService.saveUser(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
-
     //get all users
     @GetMapping("/allusers")
     public List<User> getAllUsers() {
@@ -49,7 +50,7 @@ public class UserController {
     // get skill's of particular user
     @GetMapping("/{id}/skills")
     public List<Skill> getUserSkills(@PathVariable Long id) {
-        
+
         return userService.getUserSkills(id);
     }
 
@@ -91,4 +92,5 @@ public class UserController {
         // 3. Return the 200 OK response. Returns [] if no users match.
         return ResponseEntity.ok(response);
     }
+
 }

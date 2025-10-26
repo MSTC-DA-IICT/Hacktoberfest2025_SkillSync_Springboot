@@ -2,11 +2,12 @@ package com.skillsync.skillsync.service;
 
 import java.util.*;
 
+import com.skillsync.skillsync.dto.UserDTO;
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
 
 public interface UserService {
-    User saveUser(User user); 
+    User saveUser(UserDTO userDTO);
 
     List<User> getAllUsers(); 
 
@@ -24,6 +25,6 @@ public interface UserService {
     // Search Users by Name, Bio, or Skills
     List<User> searchUsers(String query);
 
-    //get skills of a particular userss
+    //get skills of a particular users
     List<Skill> getUserSkills(Long userId);
 }
