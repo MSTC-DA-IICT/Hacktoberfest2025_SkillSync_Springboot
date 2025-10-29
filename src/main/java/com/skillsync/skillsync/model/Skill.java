@@ -1,15 +1,33 @@
 package com.skillsync.skillsync.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+@Setter
+@Getter
 @Entity
 @Table(name = "skills")
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long skill_id;
+    private Long id;
 
     private String name;
 
@@ -20,48 +38,5 @@ public class Skill {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
-    // Constructors
-    public Skill() {
-    }
-
-    public Skill(String name, String description, User user) {
-        this.name = name;
-        this.description = description;
-        this.user = user;
-    }
-
-    // Getters and Setters
-    public Long getId() {
-        return skill_id;
-    }
-
-    public void setId(Long id) {
-        this.skill_id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
 }

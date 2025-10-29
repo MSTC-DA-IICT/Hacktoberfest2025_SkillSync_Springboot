@@ -1,6 +1,7 @@
 package com.skillsync.skillsync.dto;
 
 import com.skillsync.skillsync.model.User;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
