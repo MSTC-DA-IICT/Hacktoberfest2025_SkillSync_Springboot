@@ -1,32 +1,31 @@
 package com.skillsync.skillsync.service.impl;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.management.RuntimeErrorException;
-
+import com.skillsync.skillsync.dto.SkillMapper;
 import com.skillsync.skillsync.dto.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.skillsync.skillsync.dto.UserMapper;
+import com.skillsync.skillsync.dto.UserUpdateDTO;
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
 import com.skillsync.skillsync.repository.UserRepository;
 import com.skillsync.skillsync.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.skillsync.skillsync.repository.UserRepository;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.util.Optional.ofNullable;
 
 @Service
-public class UserServiceImpl implements UserService 
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService
 {   
     private final UserRepository userRepository;
-
-    //Constructor for Dependency Injection
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    private final UserMapper userMapper;
+    private final SkillMapper skillMapper;
 
     /**
      *
@@ -64,23 +63,40 @@ public class UserServiceImpl implements UserService
 
     @Override
     public User getUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-
-        if(!userOptional.isPresent())
-        {
-            throw new RuntimeException("User Not Found");
-        }
-        return userOptional.get();
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User Not Found"));
     }
 
 
     // Update User
     @Override
-    public User updateUser(Long id, User user) {
+    public User updateUser(Long id, UserUpdateDTO userUpdateDTO) {
         // TODO: Fetch existing user by ID
         // TODO: Update only provided fields
         // TODO: Save and return updated user
-        return null;
+        User existingUser = getUserById(id);
+
+        UserUpdateDTO existingDto = userMapper.fromEntityToDto(existingUser);
+
+        UserUpdateDTO.UserUpdateDTOBuilder builder = UserUpdateDTO.builder();
+        ofNullable(existingDto.getBio()).ifPresent(builder::bio);
+        ofNullable(existingDto.getName()).ifPresent(builder::name);
+
+        UserUpdateDTO updateDTO = builder.build();
+        User updatedUser = userMapper.fromDtoToEntity(updateDTO);
+
+        updatedUser.setId(existingUser.getId());
+        if (!CollectionUtils.isEmpty(userUpdateDTO.getSkills())) {
+            updatedUser.getSkills().clear();
+            User finalUpdatedUser = updatedUser;
+            List<Skill> updatedSkills = userUpdateDTO.getSkills().stream()
+                    .map(skillMapper::fromDtoToEntity)
+                    .peek(skill -> skill.setUser(finalUpdatedUser))
+                    .toList();
+            updatedUser.setSkills(updatedSkills);
+        }
+        updatedUser = userRepository.save(updatedUser);
+        return updatedUser;
     }
 
 
@@ -91,7 +107,13 @@ public class UserServiceImpl implements UserService
         // TODO: Add skill to user’s skill list
         // TODO: Save updated user
         // TODO: Return updated user
-        return null;
+        User existingUser = getUserById(userId);
+        if (CollectionUtils.isEmpty(existingUser.getSkills())) {
+            existingUser.getSkills().add(skill);
+        } else {
+            existingUser.setSkills(List.of(skill));
+        }
+        return userRepository.save(existingUser);
     }
 
 
