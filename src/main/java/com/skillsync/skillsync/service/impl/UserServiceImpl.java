@@ -1,5 +1,13 @@
 package com.skillsync.skillsync.service.impl;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import javax.management.RuntimeErrorException;
+
+import com.skillsync.skillsync.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.skillsync.skillsync.dto.SkillMapper;
 import com.skillsync.skillsync.dto.UserMapper;
 import com.skillsync.skillsync.dto.UserUpdateDTO;
@@ -19,16 +27,39 @@ import static java.util.Optional.ofNullable;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService 
+public class UserServiceImpl implements UserService
 {   
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final SkillMapper skillMapper;
 
+    /**
+     *
+     * @param userDTO userDTO
+     * @return
+     */
     @Override
-    public User saveUser(User user) {
-        // TODO: Implement save logic using repository
-        return null;
+    public User saveUser(UserDTO userDTO) {
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setBio(userDTO.getBio());
+        user.setRoleType(userDTO.getRoleType());
+        user.setAvailableForMentorship(userDTO.isAvailableForMentorship());
+        if (userDTO.getSkills() != null && !userDTO.getSkills().isEmpty()) {
+            List<Skill> skillList = userDTO.getSkills().stream().map(skillDTO -> {
+                Skill skill = new Skill();
+                skill.setName(skillDTO.getName());
+                skill.setDescription(skillDTO.getDescription());
+                skill.setUser(user);
+                return skill;
+            }).collect(Collectors.toList());
+
+            user.setSkills(skillList);
+        }
+
+        return userRepository.save(user);
     }
 
     @Override
