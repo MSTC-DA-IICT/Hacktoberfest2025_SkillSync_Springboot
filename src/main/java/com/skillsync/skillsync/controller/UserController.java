@@ -72,9 +72,10 @@ public class UserController {
 
     // Find Users by Skill Name
     @GetMapping("/skill/{skillName}")
-    public List<User> getUsersBySkill(@PathVariable String skillName) {
-        // TODO: Implement logic to fetch users having the given skill
-        return null;
+    public ResponseEntity<List<User>> getUsersBySkill(@PathVariable String skillName) {
+        // Call service to fetch users with the specified skill
+        List<User> users = userService.getUsersBySkill(skillName);
+        return ResponseEntity.ok(users);
     }
 
     // Search Users by Name, Bio, or Skills
