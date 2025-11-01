@@ -87,11 +87,31 @@ public class UserServiceImpl implements UserService
     // Add Skill to User
     @Override
     public User addSkillToUser(Long userId, Skill skill) {
-        // TODO: Fetch user by ID
-        // TODO: Add skill to user’s skill list
-        // TODO: Save updated user
-        // TODO: Return updated user
-        return null;
+        // Fetch user by ID
+        Optional<User> userOptional = userRepository.findById(userId);
+        
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("User Not Found with id: " + userId);
+        }
+        
+        User user = userOptional.get();
+        
+        // Validate skill name is not null or empty
+        if (skill.getName() == null || skill.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Skill name is required");
+        }
+        
+        // Set the user reference for the skill
+        skill.setUser(user);
+        
+        // Add skill to user's skill list
+        if (user.getSkills() == null) {
+            user.setSkills(new ArrayList<>());
+        }
+        user.getSkills().add(skill);
+        
+        // Save updated user (skill will be saved due to cascade)
+        return userRepository.save(user);
     }
 
 

@@ -1,6 +1,8 @@
 package com.skillsync.skillsync.controller;
 
 import com.skillsync.skillsync.dto.UserDTO;
+import com.skillsync.skillsync.dto.SkillDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -64,9 +66,16 @@ public class UserController {
 
     //  Add Skill to existing User
     @PostMapping("/{id}/add/skills")
-    public User addSkillToUser(@PathVariable Long id, @RequestBody Skill skill) {
-        // TODO: Implement logic to attach skill to user via service layer
-        return null;
+    public ResponseEntity<User> addSkillToUser(@PathVariable Long id, @Valid @RequestBody SkillDTO skillDTO) {
+        // Convert SkillDTO to Skill entity
+        Skill skill = new Skill();
+        skill.setName(skillDTO.getName());
+        skill.setDescription(skillDTO.getDescription());
+        
+        // Add skill to user via service layer
+        User updatedUser = userService.addSkillToUser(id, skill);
+        
+        return ResponseEntity.ok(updatedUser);
     }
 
 
