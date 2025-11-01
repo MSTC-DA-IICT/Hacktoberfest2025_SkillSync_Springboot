@@ -6,15 +6,14 @@ import java.util.stream.Collectors;
 import javax.management.RuntimeErrorException;
 
 import com.skillsync.skillsync.dto.UserDTO;
+import com.skillsync.skillsync.dto.UserUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.skillsync.skillsync.model.Skill;
 import com.skillsync.skillsync.model.User;
 import com.skillsync.skillsync.repository.UserRepository;
 import com.skillsync.skillsync.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.skillsync.skillsync.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService 
@@ -76,11 +75,43 @@ public class UserServiceImpl implements UserService
 
     // Update User
     @Override
-    public User updateUser(Long id, User user) {
-        // TODO: Fetch existing user by ID
-        // TODO: Update only provided fields
-        // TODO: Save and return updated user
-        return null;
+    public User updateUser(Long id, UserUpdateDTO userUpdateDTO) {
+        // Fetch existing user by ID
+        Optional<User> userOptional = userRepository.findById(id);
+        
+        if (!userOptional.isPresent()) {
+            throw new RuntimeException("User Not Found");
+        }
+        
+        User existingUser = userOptional.get();
+        
+        // Update only name, bio, and skills - other fields remain unchanged
+        existingUser.setName(userUpdateDTO.getName());
+        
+        // Update bio if provided (can be null to clear bio)
+        existingUser.setBio(userUpdateDTO.getBio());
+        
+        // Handle skills update - only update if skills are provided
+        if (userUpdateDTO.getSkills() != null) {
+            // Clear existing skills (orphanRemoval will handle deletion)
+            existingUser.getSkills().clear();
+            
+            // Add new skills from DTO
+            if (!userUpdateDTO.getSkills().isEmpty()) {
+                List<Skill> skillList = userUpdateDTO.getSkills().stream().map(skillDTO -> {
+                    Skill skill = new Skill();
+                    skill.setName(skillDTO.getName());
+                    skill.setDescription(skillDTO.getDescription());
+                    skill.setUser(existingUser);
+                    return skill;
+                }).collect(Collectors.toList());
+                
+                existingUser.setSkills(skillList);
+            }
+        }
+        
+        // Save and return updated user
+        return userRepository.save(existingUser);
     }
 
 
