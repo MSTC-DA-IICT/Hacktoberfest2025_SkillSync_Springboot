@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.management.RuntimeErrorException;
 
+import com.skillsync.skillsync.dto.SkillDTO;
 import com.skillsync.skillsync.dto.UserDTO;
 import com.skillsync.skillsync.dto.UserUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,20 +94,19 @@ public class UserServiceImpl implements UserService
         
         // Handle skills update - only update if skills are provided
         if (userUpdateDTO.getSkills() != null) {
-            // Clear existing skills (orphanRemoval will handle deletion)
+            // Clear existing skills from the collection (orphanRemoval will handle deletion)
+            // Important: Clear the existing collection, don't replace it with a new one
             existingUser.getSkills().clear();
             
-            // Add new skills from DTO
+            // Add new skills to the existing collection
             if (!userUpdateDTO.getSkills().isEmpty()) {
-                List<Skill> skillList = userUpdateDTO.getSkills().stream().map(skillDTO -> {
+                for (SkillDTO skillDTO : userUpdateDTO.getSkills()) {
                     Skill skill = new Skill();
                     skill.setName(skillDTO.getName());
                     skill.setDescription(skillDTO.getDescription());
                     skill.setUser(existingUser);
-                    return skill;
-                }).collect(Collectors.toList());
-                
-                existingUser.setSkills(skillList);
+                    existingUser.getSkills().add(skill);
+                }
             }
         }
         
