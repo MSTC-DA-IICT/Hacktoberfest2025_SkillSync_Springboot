@@ -98,9 +98,15 @@ public class UserServiceImpl implements UserService
     // Find Users by Skill Name
     @Override
     public List<User> getUsersBySkill(String skillName) {
-        // TODO: Implement logic to fetch users having the given skill
-        // TODO: can use repository
-        return null;
+        // Return empty list if skill name is null or empty
+        if (skillName == null || skillName.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        // Use repository method to find users with case-insensitive skill name matching
+        List<User> users = userRepository.findBySkillNameIgnoreCase(skillName.trim());
+        
+        return users != null ? users : Collections.emptyList();
     }
 
 
