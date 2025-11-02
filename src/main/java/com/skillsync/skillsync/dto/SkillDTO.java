@@ -1,9 +1,12 @@
 package com.skillsync.skillsync.dto;
 
 import com.skillsync.skillsync.model.Skill;
+import jakarta.validation.constraints.NotBlank;
 
 public class SkillDTO {
     private Long id;
+    
+    @NotBlank(message = "Skill name is required")
     private String name;
     private String description;
 
