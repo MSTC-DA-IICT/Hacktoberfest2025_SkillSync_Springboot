@@ -15,6 +15,7 @@ import com.skillsync.skillsync.service.UserService;
 import org.springframework.http.ResponseEntity;
 import com.skillsync.skillsync.dto.UserSearchResponseDTO;
 
+import jakarta.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,11 +57,18 @@ public class UserController {
         return userService.getUserSkills(id);
     }
 
-    //update User by id  -> @RequestBody User user, change to UserUpdateDTO object
+    //update User by id
     @PutMapping("/update/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO user) {
-        // TODO: Implement update user logic (call service layer)
-        return null;
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+        try {
+            User updatedUser = userService.updateUser(id, userUpdateDTO);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("User Not Found")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            throw e;
+        }
     }
 
 
